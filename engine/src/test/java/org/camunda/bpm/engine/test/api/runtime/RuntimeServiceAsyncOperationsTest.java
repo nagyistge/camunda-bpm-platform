@@ -346,9 +346,14 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
 
     // then
     List<Job> jobs = managementService.createJobQuery().jobDefinitionId(batch.getBatchJobDefinitionId()).list();
+    assertEquals(4, jobs.size());
+    assertEquals(sourceDefinition1.getDeploymentId(), jobs.get(0).getDeploymentId());
+    assertEquals(sourceDefinition2.getDeploymentId(), jobs.get(3).getDeploymentId());
+
     List<Integer> jobsToBeExecuted = new ArrayList<Integer>();
     for (int i = 0; i < jobs.size(); i++) {
-      if (jobs.get(i).getDeploymentId() == sourceDefinition1.getDeploymentId()) {
+
+      if (jobs.get(i).getDeploymentId().equals(sourceDefinition1.getDeploymentId())) {
         managementService.executeJob(jobs.get(i).getId());
       } else {
         jobsToBeExecuted.add(i);
